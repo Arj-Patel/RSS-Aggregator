@@ -47,7 +47,7 @@ func (apiCfg *apiConfig) handlerGetFeeds(w http.ResponseWriter, r *http.Request)
 
 	feeds, err := apiCfg.DB.GetFeeds(r.Context())
 	if err != nil {
-		respondWithErr(w, 500, fmt.Sprintf("Couldn.t get feeds: %v", err))
+		respondWithErr(w, 500, fmt.Sprintf("Couldn't get feeds: %v", err))
 		return
 	}
 
