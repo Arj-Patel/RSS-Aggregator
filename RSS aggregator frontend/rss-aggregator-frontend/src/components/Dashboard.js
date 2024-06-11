@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 
@@ -10,6 +11,18 @@ export default function Dashboard() {
     const [followedFeedIds, setFollowedFeedIds] = useState([]);
     const [followedFeedFollowIds, setFollowedFeedFollowIds] = useState({});
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
+
+    const handleFeedChange = (feedId) => {
+        setSelectedFeed(feeds.find(feed => feed.id === feedId));
+    };
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+        setShowDropdown(true); // Show the dropdown when typing
+    };
+
+    const filteredFeeds = searchTerm ? feeds.filter(feed => feed.name.toLowerCase().startsWith(searchTerm.toLowerCase())) : feeds;
 
     useEffect(() => {
         axios.get('http://localhost:8080/v1/feeds')
@@ -22,15 +35,6 @@ export default function Dashboard() {
             });
     }, []);
 
-    const handleFeedChange = (feedId) => {
-        setSelectedFeed(feeds.find(feed => feed.id === feedId));
-    };
-
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-        setShowDropdown(true); // Show the dropdown when typing
-    };
-
     useEffect(() => {
         const apiKey = localStorage.getItem('apiKey');
         axios.get('http://localhost:8080/v1/feed_follows', {
@@ -39,7 +43,6 @@ export default function Dashboard() {
             }
         })
             .then(response => {
-                // The response should be an array of objects, each with a feed_id property
                 console.log(response.data);
                 const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
                 setFollowedFeedIds(feedIds);
@@ -47,10 +50,9 @@ export default function Dashboard() {
             .catch(error => {
                 console.error('There was an error!', error);
             });
-    }, []); // Empty dependency array means this useEffect runs once when the component mounts
+    }, []);
 
 
-    const filteredFeeds = searchTerm ? feeds.filter(feed => feed.name.toLowerCase().startsWith(searchTerm.toLowerCase())) : feeds;
 
     useEffect(() => {
         if (selectedFeed) {
@@ -109,8 +111,20 @@ export default function Dashboard() {
             })
                 .then(response => {
                     console.log(feedId);
-                    setFollowedFeedIds([...followedFeedIds, feedId]); // Add feedId to followedFeedIds
-                    setFollowedFeedFollowIds({ ...followedFeedFollowIds, [feedId]: response.data.id }); // Store the feed_follow_id
+                    setFollowedFeedIds([...followedFeedIds, feedId]);
+                    setFollowedFeedFollowIds({ ...followedFeedFollowIds, [feedId]: response.data.id });
+
+                    axios.get(`http://localhost:8080/v1/posts?feed_id=${feedId}`, {
+                        headers: {
+                            'Authorization': `ApiKey ${apiKey}`
+                        }
+                    })
+                        .then(response => {
+                            setPosts([...posts, ...response.data]);
+                        })
+                        .catch(error => {
+                            console.error('There was an error!', error);
+                        });
                 })
                 .catch(error => {
                     console.error('There was an error!', error);
@@ -128,10 +142,13 @@ export default function Dashboard() {
             })
                 .then(() => {
                     const newFollowedFeedIds = followedFeedIds.filter(id => id !== feedId);
-                    setFollowedFeedIds(newFollowedFeedIds); // Remove feedId from followedFeedIds
+                    setFollowedFeedIds(newFollowedFeedIds);
 
                     const { [feedId]: value, ...remaining } = followedFeedFollowIds;
-                    setFollowedFeedFollowIds(remaining); // Remove feed_follow_id from followedFeedFollowIds
+                    setFollowedFeedFollowIds(remaining);
+
+                    const newPosts = posts.filter(post => post.feed_id !== feedId);
+                    setPosts(newPosts);
                 })
                 .catch(error => {
                     console.error('There was an error!', error);
@@ -139,8 +156,18 @@ export default function Dashboard() {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('apiKey');
+        navigate('/signup');
+    };
+
     return (
+
         <div className="container">
+            <button className="Logout-button" onClick={handleLogout}>
+                Logout
+            </button>
             <h1>Dashboard</h1>
             <div className="search-bar-container">
                 <input type="text" placeholder="Search feeds" value={searchTerm} onChange={handleSearchChange} />
@@ -149,23 +176,30 @@ export default function Dashboard() {
             {showDropdown && (
                 <div className="dropdown">
                     {filteredFeeds.map(feed => (
-                        <div key={feed.id}>
-                            <span onClick={() => handleFeedChange(feed.id)}>
-                                {feed.name}
-                            </span>
-                            {followedFeedIds.includes(feed.id) ? (
-                                <button onClick={() => handleUnfollowFeed(feed.id)}>Unfollow</button>
-                            ) : (
-                                <button onClick={() => handleFollowFeed(feed.id)}>Follow</button>
-                            )}
+                        <div key={feed.id} className="dropdown-item">
+                            <div className="feedName">
+                                <span onClick={() => handleFeedChange(feed.id)}>
+                                    {feed.name}
+                                </span>
+                            </div>
+                            <div className="follow-unfollow-buttons">
+                                {followedFeedIds.includes(feed.id) ? (
+                                    <button className="unfollow-button" onClick={() => handleUnfollowFeed(feed.id)}>Unfollow</button>
+                                ) : (
+                                    <button className="follow-button" onClick={() => handleFollowFeed(feed.id)}>Follow</button>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
             )}
+
             <div className="post-list">
                 {posts.map(post => (
                     <div key={post.id} className="post-title">
-                        {post.title}
+                        <a href={post.url} target="_blank" rel="noopener noreferrer">
+                            {post.title}
+                        </a>
                     </div>
                 ))}
             </div>

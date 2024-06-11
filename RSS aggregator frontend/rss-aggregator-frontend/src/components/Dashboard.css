@@ -1,74 +1,121 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: #333;
-    font-size: 24px;
-  }
-  
-  input[type="text"] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 24px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .dropdown {
-    background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-  }
-  
-  .dropdown div {
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  .dropdown div:hover {
-    background-color: #f1f1f1;
-  }
+/* Dashboard.css */
 
-  .search-bar-container {
+.container {
     display: flex;
-    align-items: stretch; /* This will make the items the same height */
-  }
-  
-  .search-bar-container input[type="text"] {
-    flex-grow: 1; /* This will make the input take up the remaining space */
-  }
-  
-  .search-bar-container button {
-    width: 50px; /* Adjust as needed */
-  }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    background-color: #ffff;
+    padding: 30px;
+}
+
+h1 {
+    color: #333;
+    font-size: 3em;
+}
+
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.search-bar-container input {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    width: 750px; /* Increased width */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.search-bar-container button {
+    padding: 15px;
+    font-size: 1.2em;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 15px;
+}
+
+.dropdown {
+    width: 780px; /* Increased width */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+.dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.feedName span {
+    cursor: pointer;
+    color: #333;
+}
+
+.follow-button, .unfollow-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.follow-button {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.unfollow-button {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.post-list {
+    width: 780px; /* Increased width */
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.post-title {
+    padding: 15px;
+    border-bottom: 1px solid #c2bfbf;
+}
+
+.post-title:last-child {
+    border-bottom: none;
+}
+
+.post-title a {
+    color: #0000EE;
+    text-decoration: none;
+}
+
+.Logout-button{
+    position: absolute;
+    top: 80px; /* Adjust as needed */
+    right: 200px; /* Adjust as needed */
+    padding: 20px;
+    background-color: #b4b4b4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Logout-button:hover {
+    background-color: #e2e6ea;
+}
