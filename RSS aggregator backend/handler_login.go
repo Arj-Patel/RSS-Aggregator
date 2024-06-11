@@ -15,6 +15,8 @@ type Credentials struct {
 
 func (apiCfg *apiConfig) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	var creds Credentials
+	//print that we are in the login handler
+	// fmt.Println("Login handler")
 	err := json.NewDecoder(r.Body).Decode(&creds)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -42,5 +44,11 @@ func (apiCfg *apiConfig) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(map[string]string{"token": tokenString})
+	// fmt.Println(user.ApiKey)
+
+	// Include the user's API key in the response
+	json.NewEncoder(w).Encode(map[string]string{
+		"token":  tokenString,
+		"apiKey": user.ApiKey,
+	})
 }
