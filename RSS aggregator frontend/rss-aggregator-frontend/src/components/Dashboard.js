@@ -25,7 +25,7 @@ export default function Dashboard() {
     const filteredFeeds = searchTerm ? feeds.filter(feed => feed.name.toLowerCase().startsWith(searchTerm.toLowerCase())) : feeds;
 
     useEffect(() => {
-        axios.get('http://192.168.239.148:8080/v1/feeds')
+        axios.get('https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/feeds')
             .then(response => {
                 console.log(response.data);
                 setFeeds(response.data);
@@ -37,7 +37,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const apiKey = localStorage.getItem('apiKey');
-        axios.get('http://192.168.239.148:8080/v1/feed_follows', {
+        axios.get('https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/feed_follows', {
             headers: {
                 'Authorization': `ApiKey ${apiKey}`
             }
@@ -68,7 +68,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const apiKey = localStorage.getItem('apiKey');
-        axios.get('http://192.168.239.148:8080/v1/feed_follows', {
+        axios.get('https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/feed_follows', {
             headers: {
                 'Authorization': `ApiKey ${apiKey}`
             }
@@ -88,7 +88,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const apiKey = localStorage.getItem('apiKey');
-        axios.get('http://192.168.239.148:8080/v1/posts', {
+        axios.get('https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/posts', {
             headers: {
                 'Authorization': `ApiKey ${apiKey}`
             }
@@ -105,7 +105,7 @@ export default function Dashboard() {
         if (window.confirm('Are you sure you want to follow this feed?')) {
             const apiKey = localStorage.getItem('apiKey');
             console.log(apiKey);
-            axios.post('http://192.168.239.148:8080/v1/feed_follows', { feed_id: feedId }, {
+            axios.post('https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/feed_follows', { feed_id: feedId }, {
                 headers: {
                     'Authorization': `ApiKey ${apiKey}`
                 }
@@ -115,7 +115,7 @@ export default function Dashboard() {
                     setFollowedFeedIds([...followedFeedIds, feedId]);
                     setFollowedFeedFollowIds({ ...followedFeedFollowIds, [feedId]: response.data.id });
 
-                    axios.get(`http://192.168.239.148:8080/v1/posts?feed_id=${feedId}`, {
+                    axios.get(`https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/posts?feed_id=${feedId}`, {
                         headers: {
                             'Authorization': `ApiKey ${apiKey}`
                         }
@@ -136,7 +136,7 @@ export default function Dashboard() {
     const handleUnfollowFeed = (feedId) => {
         if (window.confirm('Are you sure you want to unfollow this feed?')) {
             const apiKey = localStorage.getItem('apiKey');
-            axios.delete(`http://192.168.239.148:8080/v1/feed_follows/${followedFeedFollowIds[feedId]}`, {
+            axios.delete(`https://6fa0-2409-40c1-402e-56ce-199a-608-be22-48b2.ngrok-free.app/v1/feed_follows/${followedFeedFollowIds[feedId]}`, {
                 headers: {
                     'Authorization': `ApiKey ${apiKey}`
                 }
