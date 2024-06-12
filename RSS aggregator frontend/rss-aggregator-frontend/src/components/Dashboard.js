@@ -104,6 +104,7 @@ export default function Dashboard() {
     const handleFollowFeed = (feedId) => {
         if (window.confirm('Are you sure you want to follow this feed?')) {
             const apiKey = localStorage.getItem('apiKey');
+            console.log(apiKey);
             axios.post('http://localhost:8080/v1/feed_follows', { feed_id: feedId }, {
                 headers: {
                     'Authorization': `ApiKey ${apiKey}`

@@ -17,6 +17,7 @@ const Signup = () => {
     try {
       const response = await axios.post('http://localhost:8080/v1/users', { name, email, password: hashedPassword });
       console.log(response.data);
+      localStorage.setItem('apiKey', response.data.api_key);
       navigate('/dashboard'); // Change this line
     } catch (error) {
       console.error(error);
