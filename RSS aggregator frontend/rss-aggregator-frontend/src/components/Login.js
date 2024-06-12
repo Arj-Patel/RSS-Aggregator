@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/v1/login', { email, password });
+      const response = await axios.post('http://192.168.239.148:8080/v1/login', { email, password });
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('apiKey', response.data.apiKey);
       console.log(response.data.apiKey);
