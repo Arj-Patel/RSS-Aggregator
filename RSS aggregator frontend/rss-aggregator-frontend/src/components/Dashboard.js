@@ -44,7 +44,12 @@ export default function Dashboard() {
         })
             .then(response => {
                 console.log(response.data);
-                const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
+                if (Array.isArray(response.data)) {
+                    const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
+                    setFollowedFeedIds(feedIds);
+                } else {
+                    console.error('response.data is not an array');
+                }
                 setFollowedFeedIds(feedIds);
             })
             .catch(error => {
