@@ -43,9 +43,15 @@ export default function Dashboard() {
             }
         })
             .then(response => {
-                console.log(response.data);
-                const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
-                setFollowedFeedIds(feedIds);
+                // console.log(response.data);
+                // const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
+                // setFollowedFeedIds(feedIds);
+                if (Array.isArray(response.data)) {
+                    const feedIds = response.data.map(feedFollow => feedFollow.feed_id);
+                    setFollowedFeedIds(feedIds);
+                  } else {
+                    console.error('Unexpected server response:', response.data);
+                  }
             })
             .catch(error => {
                 console.error('There was an error!', error);
@@ -94,6 +100,7 @@ export default function Dashboard() {
             }
         })
             .then(response => {
+                console.log(response.data);
                 setPosts(response.data);
             })
             .catch(error => {

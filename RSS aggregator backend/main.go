@@ -20,6 +20,14 @@ type apiConfig struct {
 	DB *database.Queries
 }
 
+// func addNgrokHeader(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		log.Println("Setting ngrok-skip-browser-warning header")
+// 		w.Header().Set("ngrok-skip-browser-warning", "69420")
+// 		next.ServeHTTP(w, r)
+// 	})
+// }
+
 func main() {
 
 	godotenv.Load(".env")
@@ -47,11 +55,12 @@ func main() {
 	go startScraping(db, 10, time.Minute)
 
 	router := chi.NewRouter()
+	// router.Use(addNgrokHeader)
 
 	router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token", "ngrok-skip-browser-warning"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: true,
 		MaxAge:           300,
