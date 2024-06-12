@@ -15,7 +15,7 @@ const Signup = () => {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
     try {
-      const response = await axios.post('https://192.168.239.148:8080/v1/users', { name, email, password: hashedPassword });
+      const response = await axios.post('http://192.168.239.148:8080/v1/users', { name, email, password: hashedPassword });
       console.log(response.data);
       localStorage.setItem('apiKey', response.data.api_key);
       navigate('/dashboard'); // Change this line
